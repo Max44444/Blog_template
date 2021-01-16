@@ -5,16 +5,31 @@ class ApiService {
 
   async createPost(post) {
     try {
-      const request = new Request(this.url + '/posts.json', {
+      const request = new Request(`${this.url}/posts.json`, {
         method: 'post',
         body: JSON.stringify(post)
       });
-      const response = await fetch(request);
-      return await response.json()
+      return useRequest(request);
     } catch (error) {
       console.error(error);
     }
   }
+
+  async fetchPosts() {
+    try {
+      const request = new Request(`${this.url}/posts.json`, {
+        method: 'get'
+      });
+      return useRequest(request);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+}
+
+async function useRequest(request) {
+  const response = await fetch(request);
+  return await response.json()
 }
 
 export const apiService = new ApiService('https://js-blog-2ecd8-default-rtdb.firebaseio.com');
