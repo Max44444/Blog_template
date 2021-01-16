@@ -10,13 +10,13 @@ export class Component {
 
   onHide() {}
 
-  hide() {
-    this.$el.classList.add('hide');
+  show() {
+    this.$el.classList.remove('hide');
     this.onShow();
   }
 
-  show() {
-    this.$el.classList.remove('hide');
+  hide() {
+    this.$el.classList.add('hide');
     this.onHide();
   }
 }
