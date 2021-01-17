@@ -1,6 +1,7 @@
 import { Component } from '../core/component';
 import { apiService } from '../services/api.service';
 import { transformService } from '../services/transform.service';
+import { renderPost } from '../templates/post.template';
 
 export class PostComponent extends Component {
   constructor(id, { loader }) {
@@ -16,7 +17,7 @@ export class PostComponent extends Component {
     this.loader.show();
     const fbData = await apiService.fetchPosts();
     const posts = transformService.fbObjectToArray(fbData);
-    const html = posts.map(renderPost).join(' ');
+    const html = posts.map(i => renderPost(i, { withButton: true })).join(' ');
     this.loader.hide();
     this.$el.insertAdjacentHTML('afterbegin', html)
   }
@@ -24,33 +25,6 @@ export class PostComponent extends Component {
   onHide() {
     this.$el.innerHTML = '';
   }
-}
-
-function renderPost({id, title, type, fulltext, date}) {
-  const tag = type === 'news'
-    ? '<li class="tag tag-blue tag-rounded">Новость</li>'
-    : '<li class="tag tag-rounded">Заметка</li>';
-
-  const button = (JSON.parse(localStorage.getItem('favorites')) || []).includes(id)
-  ? `<button class="button-round button-small button-danger" data-id="${id}">Удалить</button>`
-  : `<button class="button-round button-small button-primary" data-id="${id}">Сохранить</button>`;
-
-  return `
-    <div class="panel">z
-      <div class="panel-head">
-        <p class="panel-title">${title}</p>
-        <ul class="tags">
-          ${tag}
-        </ul>
-      </div>
-      <div class="panel-body">
-        <p class="multi-line">${fulltext}</p>
-      </div>
-      <div class="panel-footer w-panel-footer">
-        <small>${date}</small>
-        ${button}
-      </div>
-    </div>`
 }
 
 function buttonHandler(event) {
