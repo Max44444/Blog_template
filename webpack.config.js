@@ -28,7 +28,16 @@ module.exports = {
   plugins: [
     new HTMLPlugin({
       filename: 'index.html',
-      template: './src/index.html'
+      template: './src/index.html',
+      minify: {
+        collapseWhitespace: true,
+        keepClosingSlash: true,
+        removeComments: true,
+        removeRedundantAttributes: false,
+        removeScriptTypeAttributes: true,
+        removeStyleLinkTypeAttributes: true,
+        useShortDoctype: true
+      }
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css'
